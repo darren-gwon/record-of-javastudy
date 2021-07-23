@@ -1,0 +1,65 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        int menu = 0;
+        String tmp = "";
+
+        Loop1:
+        do {
+            System.out.println("메뉴를 선택해주세요:");
+            System.out.println("1. 암호화하기");
+            System.out.println("2. 암호해제");
+            System.out.println("3. 종료");
+            Scanner scanner = new Scanner(System.in);
+            tmp = scanner.nextLine();
+
+            if (tmp.length()>1){
+                System.out.printf("메뉴를 잘 못 입력하셨습니다.%n한 자리 수의 값을 입력해주세요.%n%n");
+            } else {
+                menu = (tmp.charAt(0)-'0');
+                if(!(1<=menu && menu<=3)) {
+                    System.out.printf("메뉴를 잘 못 입력하셨습니다.%n%n");
+                }
+            }
+
+            switch (menu) {
+                case 1:
+                    System.out.println("암호화할 내용을 입력해주세요 ▶");
+                      scanner = new Scanner(System.in);
+                    Encrypt.e(scanner.nextLine());
+
+                    break;
+                case 2:
+                    System.out.println("해독할 내용을 입력해주세요 ▶");
+                    scanner = new Scanner(System.in);
+                    Decrypt.d(scanner.nextLine());
+                    break;
+                case 3:
+                    break Loop1;
+            }
+        } while (true);
+    }
+}
+
+class Encrypt {
+     static String e(String original){
+         String encrypted_data = "";
+         for (int i =0; i<original.length(); i++){
+         encrypted_data+= (char)(original.charAt(i)+100);
+         }
+         System.out.printf("암호화가 완료되었습니다! >  %s  <%n", encrypted_data);
+         return encrypted_data;
+    }
+}
+
+class Decrypt {
+    static String d(String encrypted_data){
+        String decrypt_data = "";
+        for (int i =0; i<encrypted_data.length(); i++){
+            decrypt_data+= (char)(encrypted_data.charAt(i)-100);
+        }
+        System.out.printf("암호 해독이 완료되었습니다! >  %s  <%n",  decrypt_data);
+        return decrypt_data;
+    }
+}

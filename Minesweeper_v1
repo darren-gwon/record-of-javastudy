@@ -1,0 +1,90 @@
+//자바로 만든 생애 첫 미니 프로젝트
+//지뢰찾기 version 1.
+//2021.07.11
+
+import java.util.Scanner;
+
+public class Minesweeper {
+    public static void main(String[] args) {
+        System.out.println("지뢰찾기 게임에 오신 것을 환영합니다!");
+        String[][] board = Board.Board();//깨끗한 보드
+        String[][] miner = Board.Miner();//지뢰가 저장된 보드
+
+        game:
+        do {
+            for (int i = 0; i < Board.board_x; i++) {
+                for (int j = 0; j < Board.board_y; j++) {
+                    System.out.printf("%2s",board[i][j]);
+                }
+                System.out.println();
+            }
+
+            System.out.printf("%n좌표를 입력해주세요 >%n");
+            Scanner scanner = new Scanner(System.in);
+            String tmp = scanner.nextLine();
+            int input_x = (tmp.charAt(0) - '0');
+            int input_y = (tmp.charAt(1) - '0');
+
+            if (miner[input_x][input_y].equals("◆")) {
+                System.out.println("GAME OVER");
+                System.out.printf("지뢰를 밟았습니다!%n%n");
+                System.out.printf("정답공개%n");
+                for (int i = 0; i < Board.board_x; i++) {
+                    for (int j = 0; j < Board.board_x; j++) {
+                        System.out.printf("%2s",miner[i][j]);
+                    }
+                    System.out.println();
+                }
+                break game;
+            } else if (board[input_x][input_y].equals("■")) {
+                System.out.printf("이미 선택하셨습니다.%n%n");
+            } else if (miner[input_x][input_y]!="◆"){
+                board[input_x][input_y]="■";
+            }
+        }
+        while (true);
+    }
+}
+
+
+
+
+class Board{
+    //보드의 크기 지정
+    static int board_x = 10;
+    static int board_y = 10;
+
+    //깨끗한 보드
+    //보드 생성 후 모든 배열을 0으로 초기화
+    static String[][] Board(){
+        String[][] board = new String[board_x][board_y];
+        for(int i = 0; i<board.length;i++){
+            for(int j = 0; j<board[i].length;j++){
+                board[i][j]="□";
+            }
+        }
+        return board;
+    }
+
+    //지뢰가 저장된 보드
+    //보드 생성 후 모든 배열을 0으로 초기화
+    static String[][] Miner(){
+        String[][] miner = new String[board_x][board_y];
+        for(int i = 0; i<miner.length;i++){
+            for(int j = 0; j<miner[i].length;j++){
+                miner[i][j] = "□";
+            }
+        }
+        //무작위 지뢰 설치
+        for (int i=0; i<((board_x*board_y)/2); i++) {
+            int mine_x = (int)(Math.random()*board_x);
+            int mine_y = (int)(Math.random()*board_y);
+            if (!(miner[mine_x][mine_y].equals("ㅊ"))) {
+                miner[mine_x][mine_y]="◆";
+            }
+        }
+
+        return miner;
+    }
+
+}
